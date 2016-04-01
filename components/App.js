@@ -1,8 +1,7 @@
 'use strict';
 
 import React, {
-  IntentAndroid,
-  LinkingIOS,
+  Linking,
   Navigator,
   SegmentedControlIOS,
   StyleSheet,
@@ -27,7 +26,7 @@ const App = React.createClass({
   },
   componentDidMount() {
     if (this.props.platform === 'android') {
-      var url = IntentAndroid.getInitialURL(url => {
+      var url = Linking.getInitialURL().then(url => {
         if (url) {
           const screen = url.replace(/.*?:\/\//g, "");
           this.navigator.push({name: screen});
@@ -35,12 +34,12 @@ const App = React.createClass({
       });
     }
     else {
-       LinkingIOS.addEventListener('url', this.handleDeepLink);
+       Linking.addEventListener('url', this.handleDeepLink);
     }
   },
   componentWillUnmount() {
     if (this.props.platform === 'ios') {
-      LinkingIOS.removeEventListener('url', this.handleDeepLink);
+      Linking.removeEventListener('url', this.handleDeepLink);
     }
   },
   navigator: {},
@@ -48,10 +47,8 @@ const App = React.createClass({
     const screen = `${event.url.replace(/.*?:\/\//g, "")}`;
     this.navigator.push({name: screen});
   },
-  setNavigatorRef (navigator) {
-    if (navigator !== this.navigator) {
-      this.navigator = navigator;
-    }
+  setNavigator (navigator) {
+    this.navigator = navigator;
   },
   getNav() {
     if (this.props.platform === 'ios') {
@@ -82,7 +79,7 @@ const App = React.createClass({
   render() {
     return (
       <Navigator
-        ref={this.setNavigatorRef}
+        ref={this.setNavigator}
         navigationBar={this.getNav()}
         initialRoute={{name:'blue'}}
         renderScene={(route, navigator) => {
