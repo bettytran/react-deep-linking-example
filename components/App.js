@@ -32,10 +32,7 @@ const App = React.createClass({
   },
   componentDidMount() {
     if (Platform.OS === 'ios') {
-      Linking.addEventListener('url', (e) => {
-        const route = e.url.replace(/.*?:\/\//g, "");
-        this._navigator.replace(this.state.routes[route]);
-      });
+      Linking.addEventListener('url', this.handleDeepLink);
     }
     else {
       const url = Linking.getInitialURL().then(url => {
@@ -46,6 +43,9 @@ const App = React.createClass({
       });
     }
   },
+  componentWillUnmount() {
+    Linking.removeEventListener('url', this.handleDeepLink);
+  },
   render() {
     return (
       <Navigator
@@ -55,6 +55,10 @@ const App = React.createClass({
         renderScene={(route, navigator) => <route.component {...route.props} navigator={navigator} />}
       />
     );
+  },
+  handleDeepLink(e) {
+    const route = e.url.replace(/.*?:\/\//g, "");
+    this._navigator.replace(this.state.routes[route]);
   },
   getNav() {
     if (Platform.OS === 'ios') {
