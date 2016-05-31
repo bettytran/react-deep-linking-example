@@ -20,8 +20,8 @@
           <action android:name="android.intent.action.VIEW" />
           <category android:name="android.intent.category.DEFAULT" />
           <category android:name="android.intent.category.BROWSABLE" />
-          <data android:scheme="deeplink" android:host="red" />
-          <data android:scheme="deeplink" android:host="blue" />
+          <data android:scheme="deeplink" android:host="home" />
+          <data android:scheme="deeplink" android:host="account" />
         </intent-filter>
       </activity>
       <activity android:name="com.facebook.react.devsupport.DevSettingsActivity" />
