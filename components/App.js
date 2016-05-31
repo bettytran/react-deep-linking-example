@@ -8,6 +8,7 @@ import {
   Text,
   View,
   ToolbarAndroid,
+  SegmentedControlIOS,
   Linking
 } from 'react-native';
 
@@ -32,7 +33,7 @@ const App = React.createClass({
   componentDidMount() {
     if (Platform.OS === 'ios') {
       Linking.addEventListener('url', (e) => {
-        const route = `${e.url.replace(/.*?:\/\//g, "")}`
+        const route = e.url.replace(/.*?:\/\//g, "");
         this._navigator.replace(this.state.routes[route]);
       });
     }
@@ -62,7 +63,7 @@ const App = React.createClass({
           values={[this.state.routes.home.title, this.state.routes.account.title]}
           onValueChange={value => {
             const route = value === 'Home' ? this.state.routes.home : this.state.routes.account;
-            this.navigator.replace(route);
+            this._navigator.replace(route);
           }}
         />
       );
